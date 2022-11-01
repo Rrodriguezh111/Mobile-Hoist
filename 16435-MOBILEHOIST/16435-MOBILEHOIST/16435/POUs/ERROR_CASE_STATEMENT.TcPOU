@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="ERROR_CASE_STATEMENT" Id="{5aed32b3-574f-4dcf-9953-063583c93cff}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM ERROR_CASE_STATEMENT
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE MOBILEHOIST.MAINSTATE OF
+	
+(*NORMAL OPERATION*)
+
+	0:
+		
+	IF MOBILEHOIST.LOWERED_PROPERLY THEN
+		
+		MOBILEHOIST.MAINPWR			:= TRUE;
+	
+	END_IF
+
+
+	
+	IF MOBILEHOIST.ESTOP_CONDITION OR MOBILEHOIST.IOERROR OR MOBILEHOIST.TEMP_SWITCH = FALSE THEN
+		
+		MOBILEHOIST.MAINSTATE := 1;
+		
+	END_IF
+	
+	IF MOBILEHOIST.LOWERED_IMPROPERLY THEN
+		
+		MOBILEHOIST.MAINSTATE := 2;
+		
+	END_IF
+	
+	IF MOBILEHOIST.RAISED_PROPERLY THEN
+		
+		MOBILEHOIST.MAINSTATE := 3;
+		
+	END_IF
+	
+(*E-STOP/EMERGENCY MODE*)
+
+	1:
+	
+	MOBILEHOIST.MAGNETIC_BRAKE1 	:= FALSE;
+	MOBILEHOIST.MAGNETIC_BRAKE2 	:= FALSE;
+	MOBILEHOIST.MAINPWR				:= FALSE;
+	
+	IF MOBILEHOIST.ESTOP_CONDITION = FALSE AND MOBILEHOIST.IOERROR = FALSE AND MOBILEHOIST.TEMP_SWITCH = FALSE THEN
+		
+		MOBILEHOIST.MAINSTATE := 0;
+		
+	END_IF
+	
+(*IMPROPERLY LOWERED*)
+
+	2:
+	
+	MOBILEHOIST.MAGNETIC_BRAKE1 	:= FALSE;
+	MOBILEHOIST.MAGNETIC_BRAKE2 	:= FALSE;
+	MOBILEHOIST.MAINPWR				:= FALSE;
+
+	IF MOBILEHOIST.LOWERED_IMPROPERLY = FALSE THEN
+		
+		MOBILEHOIST.MAINSTATE := 0;
+		
+	END_IF
+	
+(*PROPERLY RAISED*)
+	
+	3:
+	
+	MOBILEHOIST.MAGNETIC_BRAKE1 	:= FALSE;
+	MOBILEHOIST.MAGNETIC_BRAKE2 	:= FALSE;
+	MOBILEHOIST.MAINPWR				:= FALSE;
+
+	IF MOBILEHOIST.RAISED_PROPERLY = FALSE THEN
+		
+		MOBILEHOIST.MAINSTATE := 0;
+		
+	END_IF
+	
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="ERROR_CASE_STATEMENT">
+      <LineId Id="5" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="84" Count="1" />
+      <LineId Id="87" Count="1" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="82" Count="1" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="56" Count="3" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="26" Count="3" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="41" Count="5" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="48" Count="4" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="63" Count="9" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

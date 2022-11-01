@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <GVL Name="INPUT" Id="{5a88626e-8d5c-4886-870a-18c4319d2428}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+
+
+(*BUS COUPLER 8 INPUTS REFER TO SCHEMATIC CX8190-EL1859-1*)
+EL1859_1			AT %I*		:WORD;
+
+(*BUS COUPLER 8 INPUTS REFER TO SCHEMATIC CX8190-EL1859-2*)
+EL1859_2			AT %I*		:WORD;
+
+(*BUS COUPLER STATE CX8190-EL1859-1*)
+EL1859_1_STATE		AT%I* 		:WORD;
+
+(*BUS COUPLER STATE CX8190-EL1859-2*)
+EL1859_2_STATE		AT%I* 		:WORD;
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

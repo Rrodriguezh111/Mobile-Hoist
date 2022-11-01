@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="LIGHTLOGIC" Id="{2d97790c-4942-4292-8cbe-2f4ff2397944}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM LIGHTLOGIC
+VAR
+	
+	REDSTACK	:BLINK;
+	AMBERSTACK	:BLINK;
+	
+	LIGHTS		:INT;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*RESET LED*)
+(*RESET LED ON IF ATTACHMENT GOES INTO E-STOP STATE*)
+
+IF MOBILEHOIST.ESTOP_CONDITION THEN
+	
+	MOBILEHOIST.RESETPB_LED 	:= TRUE;
+
+ELSE
+
+	MOBILEHOIST.RESETPB_LED		:= FALSE;
+
+END_IF
+
+(*RED STACK LIGHT LED*)
+(*RED STACK LIGHT LED ON IF ATTACHMENT GOES INTO E-STOP STATE*)
+IF MOBILEHOIST.ESTOP_CONDITION THEN
+	
+	MOBILEHOIST.REDSTACKLIGHT 	:= TRUE;
+
+(*RED STACK LIGHT LED BLINK IF ATTACHMENT LOSE CONNECTIVITY BETWEEN IO CARDS*)
+ELSIF MOBILEHOIST.IOERROR THEN
+	
+
+	REDSTACK(ENABLE:= TRUE , PERIOD:= T#500MS , Q=> MOBILEHOIST.REDSTACKLIGHT);
+
+ELSE
+	
+	MOBILEHOIST.REDSTACKLIGHT 	:=FALSE;
+	
+END_IF
+
+(*AMBER STACK LIGHT LED*)
+(*AMBER STACK LIGHT LED ON IF IMPROPERLY LOWERED IN THE GROUND*)
+IF MOBILEHOIST.ESTOP_CONDITION = FALSE THEN
+
+IF MOBILEHOIST.LOWERED_IMPROPERLY THEN
+	
+	MOBILEHOIST.AMBERSTACKLIGHT 	:=TRUE;
+
+ELSE 
+
+	MOBILEHOIST.AMBERSTACKLIGHT	:=FALSE;
+	
+END_IF
+
+ELSIF MOBILEHOIST.ESTOP_CONDITION THEN
+	
+	MOBILEHOIST.AMBERSTACKLIGHT := FALSE;	
+
+END_IF
+
+(*GREEN LIGHT*)
+(*GREEN SELECTOR SWITCH LIGHT ON IF ATTACHMENT IS OUT OF FAULTS*)
+IF MOBILEHOIST.ESTOP_CONDITION = FALSE THEN
+	
+IF MOBILEHOIST.LOWERED_PROPERLY THEN
+	
+	MOBILEHOIST.SELECTORSW_LED := TRUE;
+	
+ELSE
+	
+	MOBILEHOIST.SELECTORSW_LED := FALSE;
+	
+END_IF
+
+ELSIF MOBILEHOIST.ESTOP_CONDITION THEN
+	
+	MOBILEHOIST.SELECTORSW_LED := FALSE;
+	
+END_IF
+
+(*DEADMAN LIGHT LED*)
+
+IF MOBILEHOIST.ESTOP_CONDITION OR MOBILEHOIST.IOERROR	THEN
+	
+	MOBILEHOIST.REDSTACKLIGHT 	:= TRUE;
+
+ELSIF MOBILEHOIST.DEADMAN_SWITCH THEN
+	
+
+	REDSTACK(ENABLE:= TRUE , PERIOD:= T#500MS , Q=> MOBILEHOIST.REDSTACKLIGHT);
+	
+	AMBERSTACK(ENABLE:= TRUE , PERIOD:= T#500MS , Q=> MOBILEHOIST.AMBERSTACKLIGHT);
+	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="LIGHTLOGIC">
+      <LineId Id="5" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="17" Count="5" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="50" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="60" Count="2" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="73" Count="4" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="78" Count="9" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="90" Count="10" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="89" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

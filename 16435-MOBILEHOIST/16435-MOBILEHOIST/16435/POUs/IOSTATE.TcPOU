@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="IOSTATE" Id="{98fdfa3a-66f1-4679-a388-28e174bc3086}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM IOSTATE
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(*EL1859-1 & EL1859-2 STATE*)
+IF MOBILEHOIST.IOSTATE1 = FALSE OR MOBILEHOIST.IOSTATE2 = FALSE THEN
+	
+	MOBILEHOIST.IOERROR		:= TRUE;
+	
+ELSE
+	
+	MOBILEHOIST.IOERROR		:= FALSE;
+	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="IOSTATE">
+      <LineId Id="17" Count="1" />
+      <LineId Id="5" Count="1" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

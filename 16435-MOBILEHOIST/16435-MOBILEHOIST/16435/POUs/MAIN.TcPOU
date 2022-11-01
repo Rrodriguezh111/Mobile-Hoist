@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="MAIN" Id="{31c07508-205c-4447-851b-6a2075a38b4c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*
+ NAME:		16435-MOBILEHOIST
+ CREATED:	10/30/2022 
+ AUTHOR:	RRODRIGUEZ-HERNANDEZ
+ FIRST PROTOTYPE
+*)
+
+DEADMANCONTROL();
+ERROR_CASE_STATEMENT();
+IOSTATE();
+LIGHTLOGIC();
+LOADINGLOGIC();
+IO();]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="22" Count="4" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="7" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

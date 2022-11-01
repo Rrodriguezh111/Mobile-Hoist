@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="LOADINGLOGIC" Id="{7a9bfe4f-e63c-462e-9063-134147b33325}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM LOADINGLOGIC
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(*LOGIC TO DEFINE WHETHER THE MOBILE ATTACHMENT IS LOWERED PROPERLY IN THE GROUND*)
+IF MOBILEHOIST.FLOORPOSITION_SWITCH1 AND MOBILEHOIST.FLOORPOSITION_SWITCH2 THEN
+	
+	MOBILEHOIST.LOWERED_PROPERLY 			:= TRUE;
+	MOBILEHOIST.LOWERED_IMPROPERLY			:= FALSE;
+	MOBILEHOIST.RAISED_PROPERLY				:= FALSE;
+	
+(*LOGIC TO DEFINE WHETHER THE MOBILE ATTACHMENT IS IMPROPERLY LOWERED*)	
+ELSIF (MOBILEHOIST.FLOORPOSITION_SWITCH1 = FALSE AND MOBILEHOIST.FLOORPOSITION_SWITCH2) OR (MOBILEHOIST.FLOORPOSITION_SWITCH1 AND MOBILEHOIST.FLOORPOSITION_SWITCH2 = FALSE) THEN
+	
+	MOBILEHOIST.LOWERED_PROPERLY 			:= FALSE;
+	MOBILEHOIST.LOWERED_IMPROPERLY			:= TRUE;
+	MOBILEHOIST.RAISED_PROPERLY				:= FALSE;
+	
+ELSE
+	
+(*LOGIC TO DEFINE WHETHER THE MOBILE ATTACHMENT IS RAISED PROPERLY OF THE GROUND*)	
+	IF (MOBILEHOIST.FLOORPOSITION_SWITCH1 = FALSE AND MOBILEHOIST.FLOORPOSITION_SWITCH2 = FALSE) THEN
+		
+	MOBILEHOIST.LOWERED_PROPERLY 			:= FALSE;
+	MOBILEHOIST.LOWERED_IMPROPERLY			:= FALSE;
+	MOBILEHOIST.RAISED_PROPERLY				:= TRUE;
+		
+	END_IF
+
+END_IF
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="LOADINGLOGIC">
+      <LineId Id="34" Count="1" />
+      <LineId Id="5" Count="1" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="11" Count="2" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

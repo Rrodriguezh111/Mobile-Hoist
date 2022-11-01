@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="BLINK" Id="{d3add9bf-4b96-46d1-ab97-af3a2a6c87f1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTIon_BLOCK BLINK
+VAR_INPUT
+
+	Enable		:	BOOL;	(* Enable Bit to Start Running *)
+
+	Period		:	TIME;	(* Period for Flashing *)
+
+END_VAR
+
+
+(* === Output Variables === *)
+VAR_OUTPUT
+
+	Q		:	BOOL;	(* Flasher Output Bit *)
+
+END_VAR
+
+
+(* === Local Variables === *)
+VAR
+
+	onPeriod	:	Ton;	(* on Period Timer *)
+
+	offPeriod	:	Ton;	(* off Period Timer *)
+
+END_VAR
+
+VAR ConSTANT
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* === Blink Function Block === *)
+
+(*Control of Internal flash bits*)
+
+IF 	Enable = TRUE	THEN
+
+	onPeriod(IN:= NOT offPeriod.Q, PT := Period/2);
+	offPeriod(IN:= onPeriod.Q, PT := Period/2);
+
+	Q	:=	NOT onPeriod.Q;
+
+END_IF;]]></ST>
+    </Implementation>
+    <LineIds Name="BLINK">
+      <LineId Id="3" Count="10" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
